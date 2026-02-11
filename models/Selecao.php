@@ -1,5 +1,6 @@
 <?php
 class Selecao {
+    
     public $id;
     public $nome;
     public $grupo;
@@ -21,9 +22,10 @@ class Selecao {
     public function getSaldoGols() {
         return $this->golsMarcados - $this->golsSofridos;
     }
-    
+     
     public function atualizarResultado($golsFeitos, $golsSofridos) {
         $this->golsMarcados += $golsFeitos;
         $this->golsSofridos += $golsSofridos;
     }
+   
 }

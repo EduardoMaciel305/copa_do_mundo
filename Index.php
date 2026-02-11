@@ -75,6 +75,8 @@ if ($_POST) {
                 unset($db->usuarios[$_POST['id']]);
                 break;
         }
+        
+        $db->save();
     }
 }
 
