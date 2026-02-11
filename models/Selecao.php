@@ -11,7 +11,7 @@ class Selecao {
     public $golsMarcados = 0;
     public $golsSofridos = 0;
     
-    public function __construct($nome, $grupo = '', $continente = '') {
+    public function __construct($nome, $grupo, $continente) {
         $this->id = uniqid();
         $this->nome = $nome;
         $this->grupo = $grupo;
