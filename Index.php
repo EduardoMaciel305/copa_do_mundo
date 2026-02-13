@@ -1,9 +1,9 @@
 <?php
-require_once 'models/Database.php';
 require_once 'models/Selecao.php';
 require_once 'models/Usuario.php';
 require_once 'models/Grupo.php';
 require_once 'models/Jogo.php';
+require_once 'models/Database.php';
 
 $db = Database::getInstance();
 
