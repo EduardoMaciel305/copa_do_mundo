@@ -27,5 +27,11 @@ class Selecao {
         $this->golsMarcados += $golsFeitos;
         $this->golsSofridos += $golsSofridos;
     }
-   
+   public function atualizarSelecao($id, $nome, $grupo, $continente) {
+         $this->nome = $nome;
+        $this->grupo = $grupo;
+        $this->continente = $continente;
+        $this->id =$id;
+        
+   }
 }

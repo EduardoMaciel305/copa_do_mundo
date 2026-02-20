@@ -48,14 +48,35 @@ if ($_POST) {
                 }
                 break;
                 
-            case 'editar_selecao':
-                if (isset($db->selecoes[$_POST['id']])) {
-                    $s = $db->selecoes[$_POST['id']];
-                    $s->nome = $_POST['nome'];
-                    $s->grupo = $_POST['grupo'];
-                    $s->continente = $_POST['continente'];
-                }
-                break;
+                case 'editar_selecao':
+
+    if (isset($db->selecoes[$_POST['id']])) {
+
+        $selecao = $db->selecoes[$_POST['id']];
+        $grupoAntigo = $selecao->grupo;
+        $grupoNovo   = $_POST['grupo'];
+
+        // Atualiza dados básicos
+        $selecao->nome = $_POST['nome'];
+        $selecao->continente = $_POST['continente'];
+        $selecao->grupo = $grupoNovo;
+
+        // Se mudou de grupo
+        if ($grupoAntigo != $grupoNovo) {
+
+            // Remove do grupo antigo
+            if (isset($db->grupos[$grupoAntigo])) {
+                unset($db->grupos[$grupoAntigo]->selecoes[$selecao->id]);
+            }
+
+            // Adiciona ao novo grupo
+            if (isset($db->grupos[$grupoNovo])) {
+                $db->grupos[$grupoNovo]->adicionarSelecao($selecao);
+            }
+        }
+    }
+
+    break;
                 
             case 'editar_usuario':
                 if (isset($db->usuarios[$_POST['id']])) {
@@ -397,7 +418,8 @@ $page = $_GET['page'] ?? 'home';
         <div style="background:white; margin:100px auto; padding:30px; width:90%; max-width:500px; border-radius:10px;">
             <h3>Editar Seleção</h3>
             <form method="POST">
-                <input type="hidden" name="action" value="editar_selecao" id="edit-selecao-id">
+                <input type="hidden" name="action" value="editar_selecao">
+                <input type="hidden" name="id" id="edit-selecao-id">
                 <input type="text" name="nome" id="edit-selecao-nome" required>
                 <input type="text" name="grupo" id="edit-selecao-grupo" maxlength="1" required>
                 <select name="continente" id="edit-selecao-continente" required>
@@ -420,7 +442,8 @@ $page = $_GET['page'] ?? 'home';
         <div style="background:white; margin:100px auto; padding:30px; width:90%; max-width:500px; border-radius:10px;">
             <h3>Editar Usuário</h3>
             <form method="POST">
-                <input type="hidden" name="action" value="editar_usuario" id="edit-usuario-id">
+                <input type="hidden" name="action" value="editar_usuario">
+                <input type="hidden" name="id" id="edit-usuario-id">
                 <input type="text" name="nome" id="edit-usuario-nome" required>
                 <input type="number" name="idade" id="edit-usuario-idade" min="16" max="60" required>
                 <select name="selecao" id="edit-usuario-selecao" required>
@@ -442,7 +465,8 @@ $page = $_GET['page'] ?? 'home';
         <div style="background:white; margin:100px auto; padding:30px; width:90%; max-width:400px; border-radius:10px;">
             <h3>⚽ Registrar Resultado</h3>
             <form method="POST">
-                <input type="hidden" name="action" value="registrar_resultado" id="jogo-id-resultado">
+                <input type="hidden" name="action" value="registrar_resultado">
+                <input type="hidden" name="jogo_id" id="jogo-id-resultado">
                 <p id="jogo-info-resultado"></p>
                 <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center;">
                     <input type="number" name="gols_mandante" min="0" placeholder="0" style="text-align:center; font-size:20px; font-weight:bold;">
